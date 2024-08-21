@@ -3,6 +3,8 @@ pandas==2.2.2
 numpy==1.26.4
 sweetviz==2.3.1
 scikit-learn==1.5.1
-psycopg2==2.9.9
 sweetviz==2.3.1
 imbalanced-learn==0.12.3
+dspy-ai==2.4.13
+fastapi==0.111.1
+pydantic==2.8.2

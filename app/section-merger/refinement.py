@@ -3,6 +3,7 @@ from dspy.evaluate import Evaluate
 from dspy.teleprompt import BootstrapFewShot, BootstrapFewShotWithRandomSearch, BootstrapFinetune
 from dspy.primitives.assertions import assert_transform_module, backtrack_handler
 import os
+import pandas as pd
 from pathlib import Path
 from dotenv import load_dotenv
 from make_examples import *
@@ -13,12 +14,8 @@ load_dotenv(dotenv_path=dotenv_path)
 
 AZURE_OPENAI_API_KEY = os.getenv('AZURE_OPENAI_API_KEY')
 AZURE_OPENAI_ENDPOINT = os.getenv('AZURE_OPENAI_ENDPOINT')
-DB_HOST=os.getenv("DB_HOST")
-POSTGRES_DB=os.getenv("POSTGRES_DB")
-POSTGRES_USER=os.getenv("POSTGRES_USER")
-POSTGRES_PASSWORD=os.getenv("POSTGRES_PASSWORD")
 
-records = get_records(DB_HOST, POSTGRES_DB, POSTGRES_USER, POSTGRES_PASSWORD)
+records = pd.read_csv("app\\section-merger\\data\\section_data.csv")
 examples = get_examples(records)
 
 train, dev = train_dev_split(examples)
@@ -36,11 +33,4 @@ evaluate = Evaluate(devset=dev, metric=metric_EM, num_threads=NUM_THREADS, displ
 
 evaluate(cot_compiled)
 
-cot_compiled.save("compiled_model.json")
-
-# cot_compiled = CoT()
-# cot_compiled.load("compiled_model.json")
-
-# for i in range(len(test)):
-#     pred = cot_compiled(test[i].question)
-#     print(pred.answer)
+cot_compiled.save("app\\section-merger\\section_merger_model_v2.json")

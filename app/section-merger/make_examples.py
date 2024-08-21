@@ -1,23 +1,20 @@
-import psycopg2
-from psycopg2 import Error
 import random
 import dspy
 
-def get_records(DB_HOST, POSTGRES_DB, POSTGRES_USER, POSTGRES_PASSWORD):
-    try:
-        connection = psycopg2.connect(database=POSTGRES_DB, user=POSTGRES_USER, password=POSTGRES_PASSWORD, host=DB_HOST)
-        cursor = connection.cursor()
-        cursor.execute("select currentsection, previoussection, ismerge from merges")
-        records = cursor.fetchall()
-        return records
-    except Error as e:
-        print(f"Connection error: {e}")
-
-def get_examples(records):    
+def get_questions(row):
     template = "The contents of two document parts are listed below. If the two sections should be combined into one, return 'Yes'; if not, return 'No' based on the linguistic flow, content and section headers (if available).\n\n"
-    questions = [f"{template}Section 1:\n{record[1]}\n\nSection 2:\n{record[0]}" for record in records]
-    answers = ["Yes" if record[2] == 1 else "No" for record in records]
-    examples = [(questions[i], answers[i]) for i in range(len(questions))]
+    question = f"{template}Section 1:\n{row["previousSection"]}\n\nSection 2:\n{row["currentSection"]}"
+    return question
+
+def get_answers(row):
+    if row["isMerge"] == 1:
+        return "Yes"
+    return "No"
+
+def get_examples(records):
+    records["questions"] = records.apply(get_questions, axis=1)   
+    records["answers"] = records.apply(get_answers, axis=1)
+    examples = [row for row in records[["questions", "answers"]].itertuples(index=False, name=None)]
     return examples
 
 def train_dev_split(examples):

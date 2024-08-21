@@ -23,7 +23,7 @@ features = ["normalised_line_height","normalised_line_gap","sorted_line_gap","le
 
 app = FastAPI()
 
-model = joblib.load('C:\\Users\\Aashrith\\CoE Internship\\real-assistant\\section-pipeline\\app\\section-identifier\\model.pkl')
+model = joblib.load('section-identifier\\section_chunker_model_v1.pkl')
 
 class PredictRequest(BaseModel):
     json_data: Dict

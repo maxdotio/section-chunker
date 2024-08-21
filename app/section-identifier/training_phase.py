@@ -12,7 +12,7 @@ if __name__== "__main__":
     # records = get_records(cursor)
     # unq_ids = get_unique_ids(records)
 
-    records = pd.read_csv(r'data\label_data.csv')
+    records = pd.read_csv('app\\section-identifier\\data\\label_data.csv')
     unq_ids = records["documentId"].unique()
 
     patterns = [r"^\d{1,3}[\.,]+\s*[A-Za-z\s|\-,_]+",r"^\([A-Z]\)\s*[\w\s]+",r"^[A-Z]\.\s*[\w\s]+",r"^Part\s+[IVXLC]+\s*-\s*[\w\s]+",r"^Part\s+[ivxlc]+\s*-\s*[\w\s]+",r"^\d{1,3}\.?\s*[\w\s]+[\.,]",r"^\d{1,3}\.\d+\s*[\w\s]+\.",r"^[0-9]+\.[0-9]+",r"^Section\s+\d+",r"^Section\s+\d+\.\d+",r"^Section\s+\d+\.\d+\.",r"^Part\s+\d+[a-zA-Z]",r"^Part\s+\d+[a-zA-Z]\.",r"^Article\s+\d+\.\d+",r"^Article\s+[IVXLC]+",r"^Article\s+[IVXLC]+\s*-\s*[\w\s]+",r"^\s*[I\d]+[\.]?\s*$"]
@@ -33,7 +33,7 @@ if __name__== "__main__":
 
     model = model.fit(X_train, y_train)
 
-    joblib.dump(model, r'C:\Users\Aashrith\CoE Internship\real-assistant\ML experiments\model.pkl')
+    joblib.dump(model, r'C:\Users\Aashrith\CoE Internship\real-assistant\ML experiments\section_chunker_model_v2.pkl')
 
     make_eval_report(model, X_test, y_test)
 

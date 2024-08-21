@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import re
+import json
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.decomposition import PCA
 
@@ -11,12 +12,14 @@ from sklearn.decomposition import PCA
 def make_features(records, unq_ids, patterns, discards, columns):
     datasets = {}
     pages_data = {id:[] for id in unq_ids}
-    document_data = pd.read_csv(r'data\document_data')
+    document_data = pd.read_csv('app\\section-identifier\\data\\document_data.csv')
     for id in unq_ids:
-        metadata = document_data[document_data["id"] == id]["metadata"]
+        metadata = document_data.loc[document_data['id'] == id, 'metadata'].item()
         # cursor.execute(f"SELECT metadata FROM documents WHERE id={id}")
         # metadata_tuple = cursor.fetchall()
         # metadata = metadata_tuple[0][0]
+        if isinstance(metadata, str):
+            metadata = json.loads(metadata)
         temp_dataset = {i:[] for i in columns}
         for i, page in enumerate(metadata["contract"]["pages"],start=1):
             page_data = {}

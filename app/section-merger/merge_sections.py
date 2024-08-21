@@ -9,13 +9,12 @@ load_dotenv(dotenv_path=dotenv_path)
 
 AZURE_OPENAI_API_KEY = os.getenv('AZURE_OPENAI_API_KEY')
 AZURE_OPENAI_ENDPOINT = os.getenv('AZURE_OPENAI_ENDPOINT')
-DB_HOST=os.getenv("DB_HOST")
 
 gpt3_turbo = dspy.AzureOpenAI(api_base=AZURE_OPENAI_ENDPOINT, api_version='2024-02-15-preview', model='gpt-4o-mini-global-128k',  api_key=AZURE_OPENAI_API_KEY)
 dspy.configure(lm=gpt3_turbo)
 
 cot_compiled = CoT()
-cot_compiled.load("C:\\Users\\Aashrith\\CoE Internship\\real-assistant\\section-pipeline\\app\\section-merger\\compiled_model.json")
+cot_compiled.load("app\\section-merger\\section_merger_model_v1.json")
 
 def get_predictions(questions):
     predictions = []
