@@ -9,7 +9,7 @@ from dotenv import load_dotenv
 from make_examples import *
 from modules import CoT
 
-dotenv_path = Path(r'C:\Users\Aashrith\CoE Internship\real-assistant\app\.env')
+dotenv_path = Path('app\\.env')
 load_dotenv(dotenv_path=dotenv_path)
 
 AZURE_OPENAI_API_KEY = os.getenv('AZURE_OPENAI_API_KEY')

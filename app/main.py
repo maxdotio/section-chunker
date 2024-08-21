@@ -1,11 +1,12 @@
 import sys
-sys.path.insert(1, 'C:\\Users\\Aashrith\\CoE Internship\\real-assistant\\section-pipeline\\app\\section-identifier')
-sys.path.insert(2, 'C:\\Users\\Aashrith\\CoE Internship\\real-assistant\\section-pipeline\\app\\section-merger')
+from pathlib import Path
+sys.path.insert(1, 'section-identifier')
+sys.path.insert(2, 'section-merger')
 
 from fastapi import FastAPI, HTTPException, Query, Request
 from pydantic import BaseModel
 import joblib
-from  feature_engineering import extract_features
+from feature_engineering import extract_features
 from make_sections import *
 from merge_sections import *
 import json
@@ -23,7 +24,9 @@ features = ["normalised_line_height","normalised_line_gap","sorted_line_gap","le
 
 app = FastAPI()
 
-model = joblib.load('section-identifier\\section_chunker_model_v1.pkl')
+model_path = Path('section-identifier/section_chunker_model_v1.pkl')
+
+model = joblib.load(model_path)
 
 class PredictRequest(BaseModel):
     json_data: Dict

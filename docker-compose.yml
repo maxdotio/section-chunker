@@ -1,0 +1,12 @@
+version: '3'
+services:
+  section-chunker:
+    build: ./app
+    ports:
+      - "8080:80"
+    networks:
+      - sectionchunker-network-local
+
+networks:
+  sectionchunker-network-local:
+    name: sectionchunker-network-local
